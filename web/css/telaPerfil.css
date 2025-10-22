@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1.5rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+    color: #4b5563;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: #1f2937;
+}
+
+.profile-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    text-align: center;
+}
+
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .event-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.event-card {
+    display: flex;
+    gap: 1.5rem;
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Tela Perfil — incrementos */
+.cover {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+#pfTabs .count {
+    font-size: .75rem;
+    background: #eef2f7;
+    color: #475569;
+    padding: .1rem .4rem;
+    border-radius: 999px;
+}
+
+#pfTabs button.active .count {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.event-mini-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: .6rem;
+}
+
+.event-meta {
+    font-size: .85rem;
+    color: #6b7280;
+}

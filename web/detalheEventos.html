@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Evento - Culture Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="css/telaPrincipal.css">
+    <link rel="stylesheet" href="css/detalheEventos.css">
+    <script src="/js/script.js" defer></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container flex justify-between items-center py-4 relative">
+            <div class="flex items-center space-x-8">
+                <a href="telaPrincipal.html" class="text-xl font-bold logo">Culture Hub</a>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="telaPrincipal.html" class="nav-link font-medium">Início</a>
+                    <a href="meusEventos.html" class="nav-link font-medium">Meus Eventos</a>
+                    <a href="telaCalendario.html" class="nav-link font-medium">Eventos</a>
+                    <a href="sobreEmpresa.html" class="nav-link font-medium">Sobre Nós</a>
+                </nav>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-4 header-auth">
+                    <a href="login.html" class="nav-link login-link">Login</a>
+                    <a href="cadastro.html" class="btn btn-primary px-6 py-2 rounded-full">Cadastre-se</a>
+                </div>
+                
+                <button class="md:hidden hamburger" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            
+            <nav class="md:hidden mobile-menu" id="mobileMenu">
+                <a href="telaPrincipal.html" class="nav-link">Início</a>
+                <a href="meusEventos.html" class="nav-link">Meus Eventos</a>
+                <a href="telaCalendario.html" class="nav-link">Eventos</a>
+                <a href="sobreEmpresa.html" class="nav-link">Sobre Nós</a>
+                <div class="p-4 border-t">
+                    <a href="login.html" class="block mb-2 text-center py-2 border rounded-lg">Login</a>
+                    <a href="cadastro.html" class="block btn btn-primary text-center py-2 rounded-lg">Cadastre-se</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container py-8">
+        <!-- Evento Principal -->
+        <div id="eventDetail" class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div class="relative h-64 md:h-80">
+                <img id="eventImage" src="img/events/rock.png" alt="Evento" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div class="absolute bottom-4 left-4 text-white">
+                    <span id="eventStatus" class="px-3 py-1 bg-green-500 rounded-full text-sm font-medium">Ao vivo</span>
+                    <h1 id="eventTitle" class="text-3xl font-bold mt-2">Rock in Rio – Palco Sunset</h1>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="flex items-center gap-2 text-gray-600">
+                                <i data-lucide="calendar"></i>
+                                <span id="eventDate">Hoje • 19:00–23:00</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-gray-600">
+                                <i data-lucide="map-pin"></i>
+                                <span id="eventLocation">Parque Olímpico</span>
+                            </div>
+                        </div>
+                        
+                        <p id="eventDescription" class="text-gray-700 mb-6">
+                            Line-up especial com colabs e convidados surpresa. Uma noite inesquecível com os maiores nomes do rock nacional e internacional.
+                        </p>
+                        
+                        <div class="flex gap-3">
+                            <button id="buyTicket" class="btn btn-primary">Garantir Ingresso</button>
+                            <button class="btn btn-secondary">
+                                <i data-lucide="heart"></i>
+                                Favoritar
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i data-lucide="share-2"></i>
+                                Compartilhar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-3">Informações</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span>Categoria:</span>
+                                <span id="eventCategory">Música</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Preço:</span>
+                                <span id="eventPrice">R$ 120,00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Ingressos:</span>
+                                <span id="eventTickets">Disponível</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Todos os Eventos -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-6">Todos os Eventos</h2>
+            <div class="grid gap-4" id="eventsList">
+                
+                <!-- Rock in Rio -->
+                <div class="event-item border rounded-lg p-4 cursor-pointer hover:bg-gray-50" 
+                     data-event='{"title":"Rock in Rio – Palco Sunset","image":"img/events/rock.png","date":"Hoje • 19:00–23:00","location":"Parque Olímpico","description":"Line-up especial com colabs e convidados surpresa.","category":"Música","price":"R$ 120,00","status":"Ao vivo","tickets":"Disponível"}'>
+                    <div class="flex gap-4">
+                        <img src="img/events/rock.png" alt="Rock in Rio" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h3 class="font-semibold">Rock in Rio – Palco Sunset</h3>
+                            <p class="text-sm text-gray-600">Hoje • 19:00–23:00 • Parque Olímpico</p>
+                            <span class="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded mt-1">Ao vivo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hamlet -->
+                <div class="event-item border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+                     data-event='{"title":"Hamlet no Municipal","image":"img/events/teatro-hamlet.jpg","date":"20/10 • 20:00","location":"Theatro Municipal","description":"Montagem clássica com nova direção e trilha original ao vivo.","category":"Teatro","price":"R$ 80,00","status":"Próximo","tickets":"Disponível"}'>
+                    <div class="flex gap-4">
+                        <img src="img/events/teatro-hamlet.jpg" alt="Hamlet" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h3 class="font-semibold">Hamlet no Municipal</h3>
+                            <p class="text-sm text-gray-600">20/10 • 20:00 • Theatro Municipal</p>
+                            <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded mt-1">Próximo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mostra Tarantino -->
+                <div class="event-item border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+                     data-event='{"title":"Mostra Tarantino","image":"img/events/cinema-mostra.jpg","date":"10–15/09","location":"Cinemateca","description":"Maratona com debates e cópias restauradas.","category":"Cinema","price":"R$ 25,00","status":"Encerrado","tickets":"Esgotado"}'>
+                    <div class="flex gap-4">
+                        <img src="img/events/cinema-mostra.jpg" alt="Mostra Tarantino" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h3 class="font-semibold">Mostra Tarantino</h3>
+                            <p class="text-sm text-gray-600">10–15/09 • Cinemateca</p>
+                            <span class="inline-block px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded mt-1">Encerrado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bienal de Arte -->
+                <div class="event-item border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+                     data-event='{"title":"Bienal de Arte Contemporânea","image":"img/events/arte-bienal.webp","date":"27/10 • 10:00","location":"Pavilhão da Bienal","description":"Curadoria com foco em arte latino-americana.","category":"Arte","price":"R$ 30,00","status":"Próximo","tickets":"Disponível"}'>
+                    <div class="flex gap-4">
+                        <img src="img/events/arte-bienal.webp" alt="Bienal" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h3 class="font-semibold">Bienal de Arte Contemporânea</h3>
+                            <p class="text-sm text-gray-600">27/10 • 10:00 • Pavilhão da Bienal</p>
+                            <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded mt-1">Próximo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stand-up -->
+                <div class="event-item border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+                     data-event='{"title":"Noite de Testes — Stand-up","image":"img/events/comedia-standup.png","date":"Hoje • 21:00–23:00","location":"Teatro do Centro","description":"Line-up rotativo com microfone aberto.","category":"Comédia","price":"R$ 40,00","status":"Ao vivo","tickets":"Disponível"}'>
+                    <div class="flex gap-4">
+                        <img src="img/events/comedia-standup.png" alt="Stand-up" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h3 class="font-semibold">Noite de Testes — Stand-up</h3>
+                            <p class="text-sm text-gray-600">Hoje • 21:00–23:00 • Teatro do Centro</p>
+                            <span class="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded mt-1">Ao vivo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FLIP -->
+                <div class="event-item border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+                     data-event='{"title":"FLIP — Mesa 3: Vozes do Atlântico","image":"img/events/literatura-flip.webp","date":"Jul/2024","location":"Paraty","description":"Autores convidados debatem memória e identidade.","category":"Literatura","price":"R$ 50,00","status":"Encerrado","tickets":"Esgotado"}'>
+                    <div class="flex gap-4">
+                        <img src="img/events/literatura-flip.webp" alt="FLIP" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h3 class="font-semibold">FLIP — Mesa 3: Vozes do Atlântico</h3>
+                            <p class="text-sm text-gray-600">Jul/2024 • Paraty</p>
+                            <span class="inline-block px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded mt-1">Encerrado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Festival de Dança -->
+                <div class="event-item border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+                     data-event='{"title":"Festival de Dança de Rua","image":"img/events/danca-rua.webp","date":"Sábado • 16:00","location":"Praça Mauá","description":"Batalhas 1v1, crews e DJs convidados.","category":"Dança","price":"Gratuito","status":"Próximo","tickets":"Disponível"}'>
+                    <div class="flex gap-4">
+                        <img src="img/events/danca-rua.webp" alt="Dança de Rua" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h3 class="font-semibold">Festival de Dança de Rua</h3>
+                            <p class="text-sm text-gray-600">Sábado • 16:00 • Praça Mauá</p>
+                            <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded mt-1">Próximo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feira Gastronômica -->
+                <div class="event-item border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+                     data-event='{"title":"Feira Gastronômica da Lapa","image":"img/events/food-festival.jpg","date":"Hoje • 12:00–22:00","location":"Arcos da Lapa","description":"Chefs independentes, food trucks e música ao vivo.","category":"Gastronomia","price":"Gratuito","status":"Ao vivo","tickets":"Disponível"}'>
+                    <div class="flex gap-4">
+                        <img src="img/events/food-festival.jpg" alt="Feira Gastronômica" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h3 class="font-semibold">Feira Gastronômica da Lapa</h3>
+                            <p class="text-sm text-gray-600">Hoje • 12:00–22:00 • Arcos da Lapa</p>
+                            <span class="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded mt-1">Ao vivo</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12">
+    <div class="container py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+          <span class="text-lg font-bold text-gray-900">Culture Hub</span>
+        </div>
+        <p class="text-gray-600">Descubra e compartilhe eventos culturais na sua cidade. Música, teatro, arte e muito
+          mais, num só lugar.</p>
+        <div class="flex gap-3 mt-4">
+          <a class="social is-ig" href="https://instagram.com/seuPerfil" target="_blank" rel="noopener"
+            aria-label="Instagram">
+            <img src="img/social/instagram.png" alt="" width="20" height="20" loading="lazy">
+          </a>
+          <a class="social is-fb" href="https://facebook.com/seuPerfil" target="_blank" rel="noopener"
+            aria-label="Facebook">
+            <img src="img/social/facebook.png" alt="" width="20" height="20" loading="lazy">
+          </a>
+          <a class="social is-x" href="https://twitter.com/seuPerfil" target="_blank" rel="noopener"
+            aria-label="X (Twitter)">
+            <img src="img/social/twitter.png" alt="" width="20" height="20" loading="lazy">
+          </a>
+          <a class="social is-yt" href="https://youtube.com/seuCanal" target="_blank" rel="noopener"
+            aria-label="YouTube">
+            <img src="img/social/youtube.png" alt="" width="20" height="20" loading="lazy">
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="ft-title">Categorias</h4>
+        <ul class="ft-list">
+          <li><a href="#">Música</a></li>
+          <li><a href="#">Teatro</a></li>
+          <li><a href="#">Cinema</a></li>
+          <li><a href="#">Arte</a></li>
+          <li><a href="#">Comédia</a></li>
+          <li><a href="#">Literatura</a></li>
+          <li><a href="#">Dança</a></li>
+          <li><a href="#">Gastronomia</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="ft-title">Suporte</h4>
+        <ul class="ft-list">
+          <li><a href="sobreEmpresa.html">Sobre nós</a></li>
+          <li><a href="#">Central de ajuda</a></li>
+          <li><a href="#">Fale conosco</a></li>
+          <li><a href="#">Política de privacidade</a></li>
+          <li><a href="#">Termos de uso</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="ft-title">Receba novidades</h4>
+        <p class="text-gray-600 mb-3">Eventos selecionados toda semana, direto no seu e-mail.</p>
+        <form onsubmit="event.preventDefault(); this.reset(); alert('Inscrito!')" class="flex gap-2">
+          <input type="email" required placeholder="Seu e-mail"
+            class="flex-1 rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button class="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:brightness-95">Assinar</button>
+        </form>
+        <div class="mt-4 flex gap-2">
+          <img src="img/badges/appstore.png" alt="App Store" class="h-10">
+          <img src="img/badges/playstore.png" alt="Google Play" class="h-10">
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t">
+      <div
+        class="container py-6 text-sm text-gray-500 flex flex-col sm:flex-row gap-2 sm:gap-6 items-center justify-between">
+        <p>&copy; 2025 Culture Hub. Todos os direitos reservados.</p>
+        <div class="flex items-center gap-3">
+          <i data-lucide="map-pin" class="w-4 h-4"></i>
+          <span>Brasil</span>
+          <span class="mx-2 text-gray-300">•</span>
+          <i data-lucide="globe" class="w-4 h-4"></i>
+          <a href="#" class="hover:text-gray-700">Português (BR)</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+    <script>
+        // Inicializar ícones
+        if (window.lucide) lucide.createIcons();
+        
+        // Atualizar header com informações de login
+        const user = localStorage.getItem('user');
+        const isGuest = localStorage.getItem('isGuest');
+        const headerAuth = document.querySelector('.header-auth');
+        
+        if (headerAuth && user && isGuest !== 'true') {
+            const userData = JSON.parse(user);
+            headerAuth.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <span class="text-sm text-gray-600">Olá, ${userData.name}</span>
+                    <div class="relative">
+                        <img src="${userData.picture}" alt="Perfil" class="w-8 h-8 rounded-full cursor-pointer" onclick="toggleProfileMenu()">
+                        <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border hidden">
+                            <a href="telaPerfil.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Meu Perfil</a>
+                            <a href="meusEventos.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Meus Eventos</a>
+                            <hr class="my-1">
+                            <button onclick="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">Sair</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Funções do menu de perfil
+        window.toggleProfileMenu = function() {
+            const menu = document.getElementById('profileMenu');
+            if (menu) menu.classList.toggle('hidden');
+        };
+        
+        window.logout = function() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('isGuest');
+            window.location.href = '/telaPrincipal.html';
+        };
+
+        // Função para atualizar detalhes do evento
+        function updateEventDetails(eventData) {
+            document.getElementById('eventImage').src = eventData.image;
+            document.getElementById('eventTitle').textContent = eventData.title;
+            document.getElementById('eventDate').textContent = eventData.date;
+            document.getElementById('eventLocation').textContent = eventData.location;
+            document.getElementById('eventDescription').textContent = eventData.description;
+            document.getElementById('eventCategory').textContent = eventData.category;
+            document.getElementById('eventPrice').textContent = eventData.price;
+            document.getElementById('eventTickets').textContent = eventData.tickets;
+            
+            // Atualizar status
+            const statusEl = document.getElementById('eventStatus');
+            statusEl.textContent = eventData.status;
+            statusEl.className = `px-3 py-1 rounded-full text-sm font-medium ${
+                eventData.status === 'Ao vivo' ? 'bg-green-500' :
+                eventData.status === 'Próximo' ? 'bg-blue-500' : 'bg-gray-500'
+            }`;
+
+            // Atualizar botão
+            const buyBtn = document.getElementById('buyTicket');
+            if (eventData.status === 'Encerrado') {
+                buyBtn.textContent = 'Encerrado';
+                buyBtn.className = 'btn bg-gray-400 text-white cursor-not-allowed';
+                buyBtn.disabled = true;
+            } else {
+                buyBtn.textContent = eventData.status === 'Ao vivo' ? 'Acompanhar' : 'Garantir Ingresso';
+                buyBtn.className = 'btn btn-primary';
+                buyBtn.disabled = false;
+            }
+        }
+
+        // Event listeners para os itens da lista
+        document.querySelectorAll('.event-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const eventData = JSON.parse(item.dataset.event);
+                updateEventDetails(eventData);
+                
+                // Scroll para o topo
+                document.getElementById('eventDetail').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            });
+        });
+    </script>
+</body>
+</html>

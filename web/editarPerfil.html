@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Perfil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/editarPerfil.css">
+  <link rel="stylesheet" href="css/avatar-generator.css">
+  <link rel="stylesheet" href="css/improvements.css">
+  <script type="module" src="js/script.js"></script>
+  <script src="/js/script.js" defer></script>
+  <script>
+    // Gerador de Avatar
+    document.addEventListener('DOMContentLoaded', function() {
+      const avatarPreview = document.getElementById('avatarPreview');
+      const generateBtn = document.getElementById('generateAvatar');
+      const randomBtn = document.getElementById('randomAvatar');
+      const styleSelect = document.getElementById('avatarStyle');
+      const bgSelect = document.getElementById('avatarBg');
+      const nameInput = document.getElementById('name');
+      
+      // Elementos da capa
+      const coverPreview = document.getElementById('coverPreview');
+      const generateCoverBtn = document.getElementById('generateCover');
+      const coverStyleSelect = document.getElementById('coverStyle');
+      const coverUpload = document.getElementById('coverUpload');
+      
+      function generateAvatar() {
+        const name = nameInput.value.trim() || 'Usuario';
+        const style = styleSelect.value;
+        const bg = bgSelect.value;
+        
+        let avatarUrl;
+        
+        if (style === 'initials') {
+          avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${bg}&color=fff&size=128&font-size=0.5`;
+        } else {
+          const seed = name + Date.now();
+          avatarUrl = `https://api.dicebear.com/7.x/${style}/svg?seed=${encodeURIComponent(seed)}&backgroundColor=${bg}&size=128`;
+        }
+        
+        avatarPreview.src = avatarUrl;
+        
+        // Não salvar automaticamente, apenas atualizar preview
+      }
+      
+      function randomAvatar() {
+        const styles = ['initials', 'bottts', 'avataaars', 'personas'];
+        const colors = ['3b82f6', '10b981', 'f59e0b', 'ef4444', '8b5cf6', '06b6d4'];
+        
+        styleSelect.value = styles[Math.floor(Math.random() * styles.length)];
+        bgSelect.value = colors[Math.floor(Math.random() * colors.length)];
+        
+        generateAvatar();
+      }
+      
+      function generateCover() {
+        const style = coverStyleSelect.value;
+        let coverUrl;
+        
+        if (style === 'upload') {
+          coverUpload.click();
+          return;
+        }
+        
+        if (style === 'gradient') {
+          const gradients = [
+            'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+            'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+            'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+          ];
+          const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
+          coverPreview.style.background = randomGradient;
+          coverUrl = randomGradient;
+        } else if (style === 'pattern') {
+          const patterns = ['geometry2', 'triangular', 'hexellence'];
+          const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
+          const gradient = 'linear-gradient(135deg, rgba(59,130,246,0.8), rgba(147,51,234,0.8))';
+          coverPreview.style.background = gradient;
+          coverUrl = gradient;
+        } else {
+          const seed = Date.now();
+          coverUrl = `https://picsum.photos/800/300?random=${seed}&blur=1`;
+          coverPreview.style.background = `url('${coverUrl}') center/cover`;
+        }
+        
+        coverPreview.dataset.coverUrl = coverUrl;
+      }
+      
+      function handleCoverUpload(event) {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const imageUrl = e.target.result;
+            coverPreview.style.background = `url('${imageUrl}') center/cover`;
+            coverPreview.dataset.coverUrl = imageUrl;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+      
+      // Event listeners
+      generateBtn.addEventListener('click', generateAvatar);
+      randomBtn.addEventListener('click', randomAvatar);
+      styleSelect.addEventListener('change', generateAvatar);
+      bgSelect.addEventListener('change', generateAvatar);
+      generateCoverBtn.addEventListener('click', generateCover);
+      coverPreview.addEventListener('click', generateCover);
+      coverStyleSelect.addEventListener('change', generateCover);
+      coverUpload.addEventListener('change', handleCoverUpload);
+      
+      // Toggle da seção de senha
+      const changePasswordToggle = document.getElementById('changePasswordToggle');
+      const passwordSection = document.getElementById('passwordSection');
+      
+      changePasswordToggle.addEventListener('change', function() {
+        if (this.checked) {
+          passwordSection.classList.remove('hidden');
+        } else {
+          passwordSection.classList.add('hidden');
+          // Limpar campos quando ocultar
+          document.getElementById('currentPassword').value = '';
+          document.getElementById('newPassword').value = '';
+          document.getElementById('confirmPassword').value = '';
+        }
+      });
+      // Remover auto-update no nome para evitar mudanças constantes
+      
+      // Carregar dados do usuário
+      const userData = JSON.parse(localStorage.getItem('user') || '{}');
+      if (userData.name) {
+        nameInput.value = userData.name;
+      }
+      if (userData.picture) {
+        avatarPreview.src = userData.picture;
+      }
+      
+      // Carregar capa e avatar existentes
+      if (userData.coverImage) {
+        if (userData.coverImage.startsWith('linear-gradient')) {
+          coverPreview.style.background = userData.coverImage;
+        } else {
+          coverPreview.style.background = `url('${userData.coverImage}') center/cover`;
+        }
+        coverPreview.dataset.coverUrl = userData.coverImage;
+      } else {
+        generateCover();
+      }
+      
+      if (!userData.picture) {
+        generateAvatar();
+      }
+      
+      // Inicializar AOS
+      if (typeof AOS !== 'undefined') {
+        AOS.init({
+          duration: 600,
+          easing: 'ease-in-out',
+          once: true
+        });
+      }
+    });
+  </script>
+</head>
+
+<body class="bg-gray-50">
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container flex justify-between items-center py-4 relative">
+      <div class="flex items-center space-x-8">
+        <a href="telaPrincipal.html" class="text-xl font-bold logo">Culture Hub</a>
+        <nav class="hidden md:flex space-x-6">
+          <a href="telaPrincipal.html" class="nav-link font-medium">Início</a>
+          <a href="meusEventos.html" class="nav-link font-medium">Meus Eventos</a>
+          <a href="telaCalendario.html" class="nav-link font-medium">Eventos</a>
+          <a href="sobreEmpresa.html" class="nav-link font-medium">Sobre Nós</a>
+        </nav>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <div class="hidden md:flex items-center space-x-4 header-auth">
+          <a href="login.html" class="nav-link login-link">Login</a>
+          <a href="cadastro.html" class="btn btn-primary px-6 py-2 rounded-full">Cadastre-se</a>
+        </div>
+        
+        <!-- Botão menu mobile -->
+        <button class="md:hidden hamburger" onclick="toggleMobileMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      
+      <!-- Menu mobile -->
+      <nav class="md:hidden mobile-menu" id="mobileMenu">
+        <a href="telaPrincipal.html" class="nav-link">Início</a>
+        <a href="meusEventos.html" class="nav-link">Meus Eventos</a>
+        <a href="telaCalendario.html" class="nav-link">Eventos</a>
+        <a href="sobreEmpresa.html" class="nav-link">Sobre Nós</a>
+        <div class="p-4 border-t">
+          <a href="login.html" class="block mb-2 text-center py-2 border rounded-lg">Login</a>
+          <a href="cadastro.html" class="block btn btn-primary text-center py-2 rounded-lg">Cadastre-se</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container py-8">
+      <h1 class="text-3xl font-bold mb-8" data-aos="fade-up">Editar Perfil</h1>
+
+      <div class="bg-white rounded-lg shadow-md p-8" data-aos="fade-up" data-aos-delay="100">
+        <form>
+          <!-- Capa do Perfil -->
+          <div class="form-group" data-aos="fade-up" data-aos-delay="200">
+            <label class="form-label">Capa do Perfil</label>
+            <div class="relative">
+              <div id="coverPreview" class="w-full h-48 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg overflow-hidden relative cursor-pointer border-2 border-gray-200 hover:border-blue-400 transition">
+                <div class="absolute inset-0 flex items-center justify-center text-white">
+                  <div class="text-center">
+                    <svg class="w-12 h-12 mx-auto mb-2 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <p class="text-sm opacity-90">Clique para gerar nova capa</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3 flex gap-2">
+                <select id="coverStyle" class="form-input flex-1">
+                  <option value="gradient">Gradiente</option>
+                  <option value="pattern">Padrão</option>
+                  <option value="abstract">Abstrato</option>
+                  <option value="upload">Enviar Arquivo</option>
+                </select>
+                <button type="button" id="generateCover" class="btn btn-secondary">Nova Capa</button>
+                <input type="file" id="coverUpload" accept="image/*" class="hidden">
+              </div>
+            </div>
+          </div>
+
+          <!-- Avatar Personalizado -->
+          <div class="form-group" data-aos="fade-up" data-aos-delay="300">
+            <label class="form-label">Foto do Perfil</label>
+            <div class="flex items-center space-x-6">
+              <div class="relative">
+                <img id="avatarPreview" src="https://ui-avatars.com/api/?name=Usuario&background=3b82f6&color=fff&size=128" 
+                     alt="Avatar" class="w-32 h-32 rounded-full border-4 border-gray-200">
+                <button type="button" id="generateAvatar" 
+                        class="absolute -bottom-2 -right-2 bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 transition">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="flex-1">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Estilo</label>
+                    <select id="avatarStyle" class="form-input">
+                      <option value="initials">Iniciais</option>
+                      <option value="bottts">Robô</option>
+                      <option value="avataaars">Cartoon</option>
+                      <option value="personas">Persona</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Cor de Fundo</label>
+                    <select id="avatarBg" class="form-input">
+                      <option value="3b82f6">Azul</option>
+                      <option value="10b981">Verde</option>
+                      <option value="f59e0b">Amarelo</option>
+                      <option value="ef4444">Vermelho</option>
+                      <option value="8b5cf6">Roxo</option>
+                      <option value="06b6d4">Ciano</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="button" id="randomAvatar" class="btn btn-secondary text-sm">
+                  Gerar Aleatório
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dados básicos -->
+          <div class="form-group" data-aos="fade-up" data-aos-delay="400">
+            <label for="name" class="form-label">Nome</label>
+            <input type="text" id="name" class="form-input" placeholder="Seu nome completo" required>
+          </div>
+
+          <div class="form-group" data-aos="fade-up" data-aos-delay="450">
+            <label for="bio" class="form-label">Bio</label>
+            <textarea id="bio" rows="4" class="form-input" placeholder="Fale um pouco sobre você"></textarea>
+          </div>
+
+          <div class="form-group" data-aos="fade-up" data-aos-delay="500">
+            <label for="location" class="form-label">Localização</label>
+            <input type="text" id="location" class="form-input" placeholder="Cidade, Estado">
+          </div>
+
+          <div class="form-group" data-aos="fade-up" data-aos-delay="550">
+            <label for="website" class="form-label">Website</label>
+            <input type="url" id="website" class="form-input" placeholder="https://seudominio.com">
+          </div>
+
+          <div class="form-group" data-aos="fade-up" data-aos-delay="600">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="email" id="email" class="form-input" placeholder="email@exemplo.com" required>
+          </div>
+
+          <div class="form-group" data-aos="fade-up" data-aos-delay="650">
+            <label for="phone" class="form-label">Telefone</label>
+            <input type="tel" id="phone" class="form-input" placeholder="(00) 00000-0000">
+          </div>
+
+          <!-- Trocar senha -->
+          <div class="mt-8" data-aos="fade-up" data-aos-delay="700">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-2xl font-bold">Trocar Senha</h2>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="changePasswordToggle" class="rounded">
+                <span class="text-sm text-gray-600">Quero alterar minha senha</span>
+              </label>
+            </div>
+            <div id="passwordSection" class="change-password-section bg-gray-50 p-4 rounded-lg hidden">
+              <div class="form-group">
+                <label for="currentPassword" class="form-label">Senha Antiga</label>
+                <input type="password" id="currentPassword" class="form-input" placeholder="Digite sua senha atual">
+              </div>
+
+              <div class="form-group">
+                <label for="newPassword" class="form-label">Nova Senha</label>
+                <input type="password" id="newPassword" class="form-input" placeholder="Digite a nova senha">
+              </div>
+
+              <div class="form-group">
+                <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                <input type="password" id="confirmPassword" class="form-input" placeholder="Repita a nova senha">
+              </div>
+            </div>
+          </div>
+
+          <!-- Botões -->
+          <div class="flex justify-end mt-8" data-aos="fade-up" data-aos-delay="750">
+            <button type="submit" class="btn btn-primary">Salvar Perfil</button>
+            <button type="reset" class="btn btn-secondary ml-4">Cancelar</button>
+          </div>
+        </form>
+        
+        <script>
+          // Salvar perfil
+          document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userData = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            // Atualizar dados do perfil
+            userData.name = document.getElementById('name').value.trim();
+            userData.bio = document.getElementById('bio').value.trim();
+            userData.location = document.getElementById('location').value.trim();
+            userData.website = document.getElementById('website').value.trim();
+            userData.email = document.getElementById('email').value.trim();
+            userData.phone = document.getElementById('phone').value.trim();
+            
+            // Manter o avatar e capa atuais
+            const currentAvatar = document.getElementById('avatarPreview').src;
+            const currentCover = document.getElementById('coverPreview').dataset.coverUrl;
+            if (currentAvatar) {
+              userData.picture = currentAvatar;
+            }
+            if (currentCover) {
+              userData.coverImage = currentCover;
+            }
+            
+            // Validar senha se a seção estiver visível
+            const changePasswordToggle = document.getElementById('changePasswordToggle');
+            if (changePasswordToggle.checked) {
+              const currentPassword = document.getElementById('currentPassword').value;
+              const newPassword = document.getElementById('newPassword').value;
+              const confirmPassword = document.getElementById('confirmPassword').value;
+              
+              if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('Preencha todos os campos de senha');
+                return;
+              }
+              
+              if (newPassword !== confirmPassword) {
+                alert('As senhas não coincidem');
+                return;
+              }
+              
+              if (newPassword.length < 6) {
+                alert('A nova senha deve ter pelo menos 6 caracteres');
+                return;
+              }
+            }
+            
+            // Salvar no localStorage
+            localStorage.setItem('user', JSON.stringify(userData));
+            
+            // Feedback visual
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Salvando...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+              btn.textContent = 'Salvo!';
+              btn.style.background = '#10b981';
+              
+              setTimeout(() => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+                btn.style.background = '';
+              }, 2000);
+            }, 1000);
+          });
+        </script>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>

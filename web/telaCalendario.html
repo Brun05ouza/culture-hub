@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendário de Eventos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="css/telaPrincipal.css">
+  <link rel="stylesheet" href="css/telaCalendario.css">
+  <script src="/js/script.js" defer></script>
+</head>
+<body class="bg-gray-50">
+  <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container flex justify-between items-center py-4 relative">
+            <div class="flex items-center space-x-8">
+                <a href="telaPrincipal.html" class="text-xl font-bold logo">Culture Hub</a>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="telaPrincipal.html" class="nav-link font-medium">Início</a>
+                    <a href="meusEventos.html" class="nav-link font-medium">Meus Eventos</a>
+                    <a href="telaCalendario.html" class="nav-link font-medium">Eventos</a>
+                    <a href="sobreEmpresa.html" class="nav-link font-medium">Sobre Nós</a>
+                </nav>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-4 header-auth">
+                    <a href="login.html" class="nav-link login-link">Login</a>
+                    <a href="cadastro.html" class="btn btn-primary px-6 py-2 rounded-full">Cadastre-se</a>
+                </div>
+                
+                <button class="md:hidden hamburger" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            
+            <nav class="md:hidden mobile-menu" id="mobileMenu">
+                <a href="telaPrincipal.html" class="nav-link">Início</a>
+                <a href="meusEventos.html" class="nav-link">Meus Eventos</a>
+                <a href="telaCalendario.html" class="nav-link">Eventos</a>
+                <a href="sobreEmpresa.html" class="nav-link">Sobre Nós</a>
+                <div class="p-4 border-t">
+                    <a href="login.html" class="block mb-2 text-center py-2 border rounded-lg">Login</a>
+                    <a href="cadastro.html" class="block btn btn-primary text-center py-2 rounded-lg">Cadastre-se</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+  <!-- Main Content -->
+  <main class="container py-8">
+    <h1 class="text-3xl font-bold mb-6">Calendário de Eventos</h1>
+    <p id="userIdDisplay" class="text-sm text-gray-600 mb-4"></p>
+
+    <section class="bg-white rounded-lg shadow-md p-6 mb-8 flex flex-col md:flex-row items-center gap-4">
+      <label for="eventDateSearch" class="font-medium text-gray-700">Filtrar por data:</label>
+      <input type="date" id="eventDateSearch" class="form-input rounded-lg border-gray-300 w-full md:w-auto">
+      <button onclick="filterEventsByDate()" class="btn btn-primary w-full md:w-auto">Pesquisar</button>
+    </section>
+
+    <h2 class="text-2xl font-bold mb-4">Adicionar Novo Evento</h2>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <form id="addEventForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+          <div>
+            <label for="eventName" class="form-label">Nome do Evento</label>
+            <input type="text" id="eventName" name="eventName" class="form-input" placeholder="Ex: Show de Rock" required>
+          </div>
+          <div>
+            <label for="eventDate" class="form-label">Data do Evento</label>
+            <input type="date" id="eventDate" name="eventDate" class="form-input" required>
+          </div>
+          <div>
+            <label for="eventTime" class="form-label">Hora do Evento</label>
+            <input type="time" id="eventTime" name="eventTime" class="form-input" required>
+          </div>
+          <div>
+            <label for="eventLocation" class="form-label">Localização</label>
+            <input type="text" id="eventLocation" name="eventLocation" class="form-input" placeholder="Ex: Auditório Municipal" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="eventDescription" class="form-label">Descrição</label>
+          <textarea id="eventDescription" name="eventDescription" rows="3" class="form-input" placeholder="Detalhes do evento..."></textarea>
+        </div>
+        <div class="flex justify-end mt-4">
+          <button type="submit" class="btn btn-primary">Registrar Evento</button>
+          <button type="reset" class="btn btn-secondary ml-4">Limpar</button>
+        </div>
+      </form>
+    </div>
+
+    <h2 class="text-2xl font-bold mb-4">Próximos Eventos</h2>
+    <div id="eventsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <p class="text-gray-500 text-center col-span-full">Carregando eventos...</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t mt-12">
+    <div class="container py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+          <span class="text-lg font-bold text-gray-900">Culture Hub</span>
+        </div>
+        <p class="text-gray-600">Descubra e compartilhe eventos culturais na sua cidade. Música, teatro, arte e muito
+          mais, num só lugar.</p>
+        <div class="flex gap-3 mt-4">
+          <a class="social is-ig" href="https://instagram.com/seuPerfil" target="_blank" rel="noopener"
+            aria-label="Instagram">
+            <img src="img/social/instagram.png" alt="" width="20" height="20" loading="lazy">
+          </a>
+          <a class="social is-fb" href="https://facebook.com/seuPerfil" target="_blank" rel="noopener"
+            aria-label="Facebook">
+            <img src="img/social/facebook.png" alt="" width="20" height="20" loading="lazy">
+          </a>
+          <a class="social is-x" href="https://twitter.com/seuPerfil" target="_blank" rel="noopener"
+            aria-label="X (Twitter)">
+            <img src="img/social/twitter.png" alt="" width="20" height="20" loading="lazy">
+          </a>
+          <a class="social is-yt" href="https://youtube.com/seuCanal" target="_blank" rel="noopener"
+            aria-label="YouTube">
+            <img src="img/social/youtube.png" alt="" width="20" height="20" loading="lazy">
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="ft-title">Categorias</h4>
+        <ul class="ft-list">
+          <li><a href="#">Música</a></li>
+          <li><a href="#">Teatro</a></li>
+          <li><a href="#">Cinema</a></li>
+          <li><a href="#">Arte</a></li>
+          <li><a href="#">Comédia</a></li>
+          <li><a href="#">Literatura</a></li>
+          <li><a href="#">Dança</a></li>
+          <li><a href="#">Gastronomia</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="ft-title">Suporte</h4>
+        <ul class="ft-list">
+          <li><a href="sobreEmpresa.html">Sobre nós</a></li>
+          <li><a href="#">Central de ajuda</a></li>
+          <li><a href="#">Fale conosco</a></li>
+          <li><a href="#">Política de privacidade</a></li>
+          <li><a href="#">Termos de uso</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="ft-title">Receba novidades</h4>
+        <p class="text-gray-600 mb-3">Eventos selecionados toda semana, direto no seu e-mail.</p>
+        <form onsubmit="event.preventDefault(); this.reset(); alert('Inscrito!')" class="flex gap-2">
+          <input type="email" required placeholder="Seu e-mail"
+            class="flex-1 rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button class="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:brightness-95">Assinar</button>
+        </form>
+        <div class="mt-4 flex gap-2">
+          <img src="img/badges/appstore.png" alt="App Store" class="h-10">
+          <img src="img/badges/playstore.png" alt="Google Play" class="h-10">
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t">
+      <div
+        class="container py-6 text-sm text-gray-500 flex flex-col sm:flex-row gap-2 sm:gap-6 items-center justify-between">
+        <p>&copy; 2025 Culture Hub. Todos os direitos reservados.</p>
+        <div class="flex items-center gap-3">
+          <i data-lucide="map-pin" class="w-4 h-4"></i>
+          <span>Brasil</span>
+          <span class="mx-2 text-gray-300">•</span>
+          <i data-lucide="globe" class="w-4 h-4"></i>
+          <a href="#" class="hover:text-gray-700">Português (BR)</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Inicializar ícones
+    if (window.lucide) lucide.createIcons();
+  </script>
+</body>
+</html>

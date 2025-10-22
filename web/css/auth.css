@@ -1,0 +1,200 @@
+
+
+.auth-has-bg{
+  --page-bg: url('/web/img/fundo.jpg');
+  background:
+    linear-gradient(135deg, rgba(2,6,23,.50), rgba(2,132,199,.30)),
+    var(--page-bg) center/cover no-repeat;
+  min-height: 100vh;
+}
+@media (min-width: 900px){
+  .auth-has-bg{ background-attachment: fixed; }
+}
+
+.auth-wrapper{
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+}
+
+.auth-card{
+  width: min(100% - 3rem, 980px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  border-radius: 1rem;
+  overflow: hidden;                 
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(6px) saturate(115%);
+  border: 1px solid rgba(255,255,255,.4);
+  box-shadow: 0 12px 36px rgba(0,0,0,.16);
+}
+@media (min-width: 900px){
+  .auth-card{ grid-template-columns: 1.15fr 1fr; }
+}
+
+.auth-aside{
+  position: relative;
+  padding: 2rem 2rem 2.5rem;
+  color: #0f172a;
+}
+.auth-aside::before{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96));
+  pointer-events:none;
+}
+.auth-aside > *{ position: relative; z-index: 1; }
+
+.auth-aside h1{ font-size:1.6rem; font-weight:800; margin-bottom:.5rem; }
+.auth-aside p{ color:#334155; margin-bottom:1rem; }
+.auth-list{ color:#334155; line-height:1.8; }
+
+.auth-form{ padding: 2rem; }
+@media (min-width: 900px){ .auth-form{ padding: 2.5rem; } }
+.auth-title{ font-size:1.25rem; font-weight:700; margin-bottom:1rem; color:#0f172a; }
+
+.auth-error{
+  background:#fef2f2; color:#991b1b; border:1px solid #fecaca;
+  padding:.75rem; border-radius:.5rem; font-size:.9rem;
+}
+.auth-alt{ margin-top:1rem; text-align:center; color:#6b7280; }
+
+/* --------- UI extra (chips, depoimento, selos) --------- */
+.meta-chips { display:flex; flex-wrap:wrap; gap:.5rem; margin:.75rem 0 1rem; }
+.chip{
+  display:inline-flex; align-items:center; gap:.4rem;
+  font-size:.8rem; padding:.25rem .6rem; border-radius:999px;
+  background: rgba(255,255,255,.85); border:1px solid rgba(15,23,42,.08);
+  backdrop-filter: blur(4px);
+}
+.testimonial{ margin:.75rem 0 0; color:#0f172a; font-size:.95rem; line-height:1.5; opacity:.9; }
+.trust-badges{ margin-top:.75rem; display:flex; align-items:center; gap:.5rem; color:#0f172a; opacity:.8; }
+
+/* --------- Inputs com ícone + botão “olho” --------- */
+.input-group{ position:relative; }
+.input-icon{
+  position:absolute; left:.65rem; top:50%; transform:translateY(-50%);
+  width:18px; height:18px; opacity:.75; pointer-events:none;
+}
+.with-icon{ padding-left:2.2rem; }
+
+.pw-toggle{
+  position:absolute; right:.5rem; top:50%; transform:translateY(-50%);
+  width:2.25rem; height:2.25rem; display:grid; place-items:center;
+  border:1px solid #e5e7eb; border-radius:.5rem; background:#f8fafc;
+  cursor:pointer;
+}
+.pw-toggle:hover{ background:#eef2ff; }
+.pw-toggle svg{ width:18px; height:18px; }
+
+.pw-strength{ height:6px; background:#e5e7eb; border-radius:999px; overflow:hidden; margin:.5rem 0 0; }
+.pw-strength > span{
+  display:block; width:0%; height:100%;
+  background: linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);
+  transition: width .25s ease;
+}
+
+/* Divisor “ou” */
+.divider{
+  display:flex; align-items:center; gap:.75rem; margin:1rem 0;
+  color:#64748b; font-size:.85rem;
+}
+.divider::before, .divider::after{
+  content:""; flex:1; height:1px; background:linear-gradient(90deg, transparent, #e5e7eb, transparent);
+}
+.divider span{ letter-spacing:.08em; text-transform:uppercase; }
+
+/* Check “lembrar de mim” (quando usado no login) */
+.remember-row{
+  display:flex; align-items:center; gap:.4rem; margin:.5rem 0 0; font-size:.9rem; color:#475569;
+}
+
+
+/* Título com destaque */
+.kicker{
+  display:inline-block; margin-bottom:.25rem;
+  font-size:.75rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:#64748b;
+}
+.auth-aside h1{ font-size:1.7rem; font-weight:800; margin:0 0 .25rem; }
+.auth-aside h1::after{
+  content:""; display:block; width:56px; height:4px; border-radius:999px;
+  margin-top:.5rem;
+  background: linear-gradient(90deg,#3b82f6,#06b6d4);
+}
+.lead{ color:#334155; margin:.25rem 0 1rem; }
+
+/* Features com subtítulo */
+.feature-list{ list-style:none; padding:0; margin:0 0 1rem; display:flex; flex-direction:column; gap:.75rem; }
+.feature{ display:flex; align-items:flex-start; gap:.75rem; }
+.feature i{ width:20px; height:20px; color:#10b981; margin-top:.15rem; }
+.feature b{ color:#0f172a; }
+.feature span{ color:#64748b; display:block; }
+
+/* Métricas */
+.metrics{ display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin:.25rem 0 1.25rem; }
+.metric{
+  background:#fff; border:1px solid #e5e7eb; border-radius:.75rem;
+  padding:.6rem .75rem; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+.metric strong{ display:block; font-size:1.1rem; line-height:1.1; color:#0f172a; }
+.metric span{ font-size:.75rem; color:#64748b; }
+
+/* Card de destaque */
+.spotlight-card{ position:relative; height:140px; border-radius:.9rem; overflow:hidden;
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
+}
+.spotlight-card img{ width:100%; height:100%; object-fit:cover; display:block; }
+.spotlight-card::after{
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.55));
+}
+.spotlight-info{ position:absolute; left:.9rem; bottom:.8rem; color:#fff; }
+.badge{
+  display:inline-block; font-size:.7rem; padding:.12rem .45rem; margin-bottom:.25rem;
+  border-radius:999px; background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.35); backdrop-filter: blur(2px);
+}
+.spotlight-info h3{ margin:0; font-weight:800; }
+.spotlight-info p{ margin:.1rem 0 0; font-size:.85rem; opacity:.9; }
+
+
+/* variante menor do card de destaque para o login */
+.spotlight-card.small{ height: 110px; }
+
+
+/* Botão Google com ícone à esquerda e texto 100% centralizado */
+.btn-google{
+  display: grid;
+  grid-template-columns: 24px 1fr 24px; 
+  align-items: center;
+  gap: .5rem;
+  padding: .9rem 1rem;
+}
+.btn-google .g-icon{
+  width: 20px; height: 20px;
+  justify-self: start;
+  display: inline-block;
+}
+.btn-google .ghost{
+  width: 20px; height: 20px;
+  visibility: hidden; 
+}
+
+/* Se o ícone for SVG (Lucide), garanta o tamanho */
+.btn-google svg{ width:20px; height:20px; }
+
+/* Toque de hover */
+.btn-google:hover{ filter: brightness(0.98); }
+
+
+/* botão/link simples para convidado */
+.btn-ghost{
+  display:block; width:100%;
+  padding:.8rem 1rem; text-align:center; font-weight:600;
+  background: transparent; border: none; color:#111827;
+  border-radius:.6rem; cursor:pointer;
+}
+.btn-ghost:hover{ background: rgba(0,0,0,.05); }

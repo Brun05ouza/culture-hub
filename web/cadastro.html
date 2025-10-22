@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar conta – Culture Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/improvements.css">
+  <script type="module" src="/js/script.js"></script>
+  <script src="/js/script.js" defer></script>
+</head>
+
+<body class="auth-has-bg" style="background:
+         linear-gradient(135deg, rgba(2,6,23,.45), rgba(2,132,199,.25)),
+         url('/img/fundo.jpg') center/cover no-repeat;">
+  <main class="auth-wrapper">
+    <section class="auth-card">
+      <!-- Lado esquerdo: contexto/benefícios -->
+      <aside class="auth-aside">
+        <span class="kicker">Nº 1 em eventos locais</span>
+        <h1>Crie sua conta</h1>
+        <p class="lead">Leva menos de 1 minuto. Depois você pode publicar eventos, favoritar e muito mais.</p>
+
+        <!-- Features com subtítulo -->
+        <ul class="feature-list">
+          <li class="feature">
+            <i data-lucide="check-circle"></i>
+            <div>
+              <b>Perfil personalizado</b>
+              <span>Recomendações com base no que você curte.</span>
+            </div>
+          </li>
+          <li class="feature">
+            <i data-lucide="check-circle"></i>
+            <div>
+              <b>Notificações & favoritos</b>
+              <span>Acompanhe artistas e eventos sem perder novidades.</span>
+            </div>
+          </li>
+          <li class="feature">
+            <i data-lucide="check-circle"></i>
+            <div>
+              <b>Ingressos e atividades</b>
+              <span>Histórico e lembretes de tudo o que você participa.</span>
+            </div>
+          </li>
+        </ul>
+
+        <!-- Métricas de confiança -->
+        <div class="metrics">
+          <div class="metric"><strong>12k+</strong><span>usuários</span></div>
+          <div class="metric"><strong>1.4k</strong><span>eventos/mês</span></div>
+          <div class="metric"><strong>4,8★</strong><span>avaliação</span></div>
+        </div>
+
+        <!-- Card de destaque (troque a imagem se quiser) -->
+        <div class="spotlight-card">
+          <img src="/img/events/danca-rua.webp" alt="">
+          <div class="spotlight-info">
+            <span class="badge">Destaque de hoje</span>
+            <h3>Festival Independente</h3>
+            <p>Rio de Janeiro • 20:00</p>
+          </div>
+        </div>
+
+        <!-- Selo LGPD -->
+        <p class="trust-badges" style="margin-top:1rem">
+          <i data-lucide="shield-check"></i> LGPD • Sem spam • Você controla seus dados
+        </p>
+      </aside>
+
+      <!-- Lado direito: formulário -->
+      <div class="auth-form">
+        <h2 class="auth-title">Cadastro</h2>
+
+        <form id="registerForm" class="space-y-4">
+          <!-- Nome -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+            <div class="input-group">
+              <i data-lucide="user-round" class="input-icon"></i>
+              <input id="regName" type="text" class="form-input with-icon" placeholder="Seu nome" required>
+            </div>
+          </div>
+
+          <!-- E-mail -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+            <div class="input-group">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input id="regEmail" type="email" class="form-input with-icon" placeholder="seu@email.com" required>
+            </div>
+          </div>
+          <!-- Senha -->
+          <div class="input-group">
+            <input id="regPassword" type="password" class="form-input with-icon pr-12" placeholder="Mín. 6 caracteres"
+              required>
+            <button type="button" class="pw-toggle" data-target="regPassword" aria-label="Mostrar senha"
+              aria-pressed="false">
+              <i data-lucide="eye"></i>
+            </button>
+          </div>
+
+          <!-- Confirmar senha -->
+          <div class="input-group">
+            <input id="regPassword2" type="password" class="form-input with-icon pr-12" placeholder="Repita a senha"
+              required>
+            <button type="button" class="pw-toggle" data-target="regPassword2" aria-label="Mostrar senha"
+              aria-pressed="false">
+              <i data-lucide="eye"></i>
+            </button>
+          </div>
+
+          <!-- Termos -->
+          <label class="flex items-center gap-2 text-sm text-gray-600">
+            <input id="regTerms" type="checkbox" class="rounded" required>
+            Aceito os <a href="#" class="text-blue-600 hover:underline">Termos de Uso</a>.
+          </label>
+
+          <!-- Erro -->
+          <div id="registerError" class="auth-error" hidden></div>
+
+          <!-- Ações -->
+          <button type="submit" class="btn btn-primary w-full">Criar conta</button>
+
+          <div class="divider"><span>ou</span></div>
+
+          <button type="button" id="googleRegister" class="btn btn-secondary w-full btn-google">
+            <i data-lucide="chrome" class="g-icon"></i>
+            <span>Cadastrar com Google</span>
+            <span class="ghost" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <p class="auth-alt">Já tem conta? <a class="text-blue-600 hover:underline" href="login.html">Entrar</a></p>
+      </div>
+    </section>
+  </main>
+  
+  <script>
+    // Inicializar ícones Lucide imediatamente
+    if (window.lucide) {
+      lucide.createIcons();
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        if (window.lucide) lucide.createIcons();
+      });
+    }
+    
+    // Cadastro com validação
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const password2 = document.getElementById('regPassword2').value;
+      const terms = document.getElementById('regTerms').checked;
+      const errorDiv = document.getElementById('registerError');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      
+      // Limpar erros
+      errorDiv.hidden = true;
+      
+      // Validações
+      if (!name || !email || !password || !password2) {
+        showError('Preencha todos os campos');
+        return;
+      }
+      
+      if (name.length < 2) {
+        showError('Nome deve ter pelo menos 2 caracteres');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showError('A senha deve ter pelo menos 6 caracteres');
+        return;
+      }
+      
+      if (password !== password2) {
+        showError('As senhas não coincidem');
+        return;
+      }
+      
+      if (!terms) {
+        showError('Você deve aceitar os termos de uso');
+        return;
+      }
+      
+      // Loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Criando conta...';
+      
+      // Simular delay
+      setTimeout(() => {
+        const userData = {
+          name: name,
+          email: email,
+          picture: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=3b82f6&color=fff'
+        };
+        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.removeItem('isGuest');
+        window.location.href = '/telaPrincipal.html';
+      }, 1000);
+      
+      function showError(message) {
+        errorDiv.textContent = message;
+        errorDiv.hidden = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Criar conta';
+      }
+    });
+    
+    // Toggle de senha
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleBtns = document.querySelectorAll('.pw-toggle');
+      
+      toggleBtns.forEach(function(toggleBtn) {
+        const targetId = toggleBtn.getAttribute('data-target');
+        const passwordInput = document.getElementById(targetId);
+        
+        if (passwordInput) {
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            
+            const icon = toggleBtn.querySelector('i');
+            if (icon) {
+              icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+              if (window.lucide) lucide.createIcons();
+            }
+          });
+        }
+      });
+    });
+    
+    // Inicializar Google Sign-In quando carregado
+    window.onload = function() {
+      if (typeof google !== 'undefined' && google.accounts) {
+        google.accounts.id.initialize({
+          client_id: "898450253699-201vqp5l08n6ee9qniu7nhv3n8ng3o56.apps.googleusercontent.com"
+        });
+      }
+    };
+  </script>
+</body>
+
+</html>

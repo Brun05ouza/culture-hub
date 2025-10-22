@@ -1,0 +1,116 @@
+/* Avatar Generator Styles */
+
+.avatar-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.avatar-preview {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-preview img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avatar-preview:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.generate-btn {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #3b82f6;
+  color: white;
+  border: 3px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.generate-btn:hover {
+  background: #2563eb;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.avatar-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.avatar-controls select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-size: 0.875rem;
+}
+
+.random-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.random-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+/* Loading animation */
+.avatar-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .avatar-section {
+    padding: 1rem;
+  }
+  
+  .avatar-controls {
+    grid-template-columns: 1fr;
+  }
+  
+  .avatar-preview img {
+    width: 96px;
+    height: 96px;
+  }
+}
