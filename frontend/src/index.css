@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Importar estilos globais */
+@import './styles/global.css';
+@import './styles/improvements.css';
+@import './styles/auth.css';
+@import './styles/telaPrincipal.css';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Componentes customizados */
+.event-card {
+  @apply bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors;
+}
+
+.category-card {
+  @apply flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer;
+}
+
+/* Animações */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+/* Status badges */
+.status-badge {
+  @apply absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium;
+}
+
+.status--ongoing {
+  @apply bg-green-100 text-green-800;
+}
+
+.status--upcoming {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.status--ended {
+  @apply bg-gray-100 text-gray-800;
+}
+
+/* Live dot animation */
+.live-dot {
+  @apply w-2 h-2 bg-green-500 rounded-full;
+  animation: pulse 2s infinite;
+}
+
+/* Container responsivo */
+.container {
+  @apply max-w-7xl mx-auto px-4;
+}
+
+/* Filtros */
+.chip {
+  @apply px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer;
+  @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+}
+
+.chip.is-active {
+  @apply bg-blue-600 text-white;
+}
+
+/* Header melhorado */
+header.scrolled {
+  @apply shadow-md;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  @apply absolute top-full left-0 right-0 bg-white border-t shadow-lg;
+  @apply flex flex-col space-y-2 p-4;
+  @apply transform -translate-y-2 opacity-0 invisible transition-all duration-200;
+}
+
+.mobile-menu.show {
+  @apply translate-y-0 opacity-100 visible;
+}
+
+/* Hamburger */
+.hamburger {
+  @apply flex flex-col justify-center items-center w-6 h-6 cursor-pointer;
+}
+
+.hamburger span {
+  @apply block w-5 h-0.5 bg-gray-600 transition-all duration-200;
+  @apply mb-1 last:mb-0;
+}
+
+.hamburger.active span:nth-child(1) {
+  @apply transform rotate-45 translate-y-1.5;
+}
+
+.hamburger.active span:nth-child(2) {
+  @apply opacity-0;
+}
+
+.hamburger.active span:nth-child(3) {
+  @apply transform -rotate-45 -translate-y-1.5;
+}
